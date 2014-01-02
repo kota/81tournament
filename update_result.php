@@ -1,16 +1,11 @@
 <?php
-require('./models/player.php');
-require('./models/config.php');
-require('./models/result.php');
+require_once('./models/player.php');
+require_once('./models/config.php');
+require_once('./models/result.php');
 
 $config = Config::load_and_validate();
 
 $players = Player::load();
-
-$player_names = array();
-foreach($players as $player){
-  $player_names[] = $player->name;
-}
 
 $url = "http://" . $config->host . "/api/kifus/search_tournament";
 $data = array(
@@ -25,6 +20,6 @@ $options = array('http' => array(
 ));
 
 $kifus = new SimpleXMLElement(file_get_contents($url, false, stream_context_create($options)));
-Result::update($kifus,$player_names);
+Result::update($kifus,$players);
 
 echo "successfully update data/result.txt\n";

@@ -1,36 +1,9 @@
 <?php
-require('./models/player.php');
-require('./models/config.php');
-require('./models/result.php');
+require_once('./models/player.php');
+require_once('./models/config.php');
 
 $config = Config::load_and_validate();
-
-$players_file = fopen('./data/players.txt','r');
-$players = Player::load();
-
-$results = Result::load();
-
-$black_result_table = array(1 => "W", 2 => "L", 3 => "D");
-$white_result_table = array(1 => "L", 2 => "W", 3 => "D");
-
-$player_results = array();
-foreach($results as $result){
-  $black_name = $result[0];
-  $white_name = $result[1];
-  $result_code = $result[2];
-
-  if(array_key_exists($black_name,$player_results)){
-    $player_results[$black_name][$white_name] = $black_result_table[$result_code];
-  } else {
-    $player_results[$black_name] = array($white_name => $black_result_table[$result_code]);
-  }
-
-  if(array_key_exists($white_name,$player_results)){
-    $player_results[$white_name][$black_name] = $white_result_table[$result_code];
-  } else {
-    $player_results[$white_name] = array($black_name => $white_result_table[$result_code]);
-  }
-}
+$players = Player::load(true);
 
 if($config->tournament_type == "single_elimination"){
   $rounds = array();
@@ -47,9 +20,7 @@ if($config->tournament_type == "single_elimination"){
       $game = array($left,$right);
       if(!$left || !$right){
         $next_round_players[] = null;
-      } elseif(array_key_exists($left->name,$player_results) &&
-               array_key_exists($right->name,$player_results[$left->name])){
-        $result = $player_results[$left->name][$right->name];
+      } elseif($result = $left->get_result($right)){
         if($result == "W"){
           $game[] = "[1,0]";
           $next_round_players[] = $left;
@@ -66,5 +37,5 @@ if($config->tournament_type == "single_elimination"){
   }
   include('./templates/single_elimination_template.php');
 } else {
-  include('./templates/diagram_template.php');
+  include('./templates/group_template.php');
 }

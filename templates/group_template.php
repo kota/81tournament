@@ -25,9 +25,8 @@
         <?php if($i == $j): ?>
           <td class="void">&nbsp;</td>
         <?php else: ?>
-          <?php $result = $player_results[$players[$i]->name] ?>
-          <?php if($result && $result[$players[$j]->name]): ?>
-            <td><?php echo $result[$players[$j]->name]; ?></td>
+          <?php if($result = $players[$i]->get_result($players[$j])): ?>
+            <td><?php echo $result; ?></td>
           <?php else: ?>
             <td>&nbsp;</td>
           <? endif ?>

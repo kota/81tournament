@@ -16,10 +16,10 @@
 <body>
  <div id="single-elim">
    <script type="text/javascript">
-   var minimalData = {
+   var tournament = {
        teams : [
          <?php for($i=0;$i<count($players)/2;$i++): ?>
-           ["<?php echo htmlspecialchars($players[$i*2]->name) ?>","<?php echo htmlspecialchars($players[$i*2+1]->name) ?>"],
+           [<?php echo htmlspecialchars($players[$i*2]->to_json_string()) ?>,<?php echo htmlspecialchars($players[$i*2+1]->to_json_string()) ?>],
          <?php endfor; ?>
        ],
        results : [
@@ -35,12 +35,24 @@
            ],
          <?php endforeach; ?>
        ]
+   }
+
+   function team_renderer(container, data, score) {
+     if (data.country_code)
+     {
+       var zero_filled_code = ("00"+data.country_code).slice(-3);
+       container.append('<img src="http://81dojo.com/dojo/images/flags_ss/'+zero_filled_code+'.png" /> ').append(data.name)
+     } else {
+       container.append(data.name);
      }
+   }
  
    $(function() {
        $('#single-elim .diagram').bracket({
          skipConsolationRound: true,
-         init: minimalData /* data to initialize the bracket with */ })
+         init: tournament, /* data to initialize the bracket with */
+         decorator: {edit: function(){}, 
+                     render: team_renderer}});
      })
    </script>
    <div class="diagram"/>

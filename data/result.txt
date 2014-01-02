@@ -1,4 +1,5 @@
-kota,kota_test1,1,2013-12-31 17:36:08 UTC,
 kota,kota_test2,2,2013-12-31 18:02:11 UTC,
 kota_test3,kota,2,2013-12-31 18:03:28 UTC,
 kota_test3,kota_test1,2,2013-12-31 18:04:32 UTC,
+* kota_test3,kota_test2,2,2013-12-31 18:03:28 UTC,
+* kota,kota_test1,1,2013-12-31 17:36:08 UTC,
