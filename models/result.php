@@ -1,6 +1,53 @@
 <?php
 class Result{
   private static $file_path = './data/result.txt';
+  public $result_code;
+  public $black;
+  public $white;
+  public $kifu_id;
+
+  public function __construct($result_code,$black,$white,$kifu_id) {
+    $this->result_code = (int)$result_code;
+    $this->black = $black;
+    $this->white = $white;
+    $this->kifu_id = $kifu_id;
+  }
+
+  public function result_label_for($player){
+    if($player->name == $this->black->name){
+      $black_result_table = array(1 => "W", 2 => "L", 3 => "D");
+      return $black_result_table[$this->result_code];
+    } elseif($player->name == $this->white->name) {
+      $white_result_table = array(1 => "L", 2 => "W", 3 => "D");
+      return $white_result_table[$this->result_code];
+    } else {
+      return "";
+    }
+  }
+
+  public function point_for($player){
+    switch($this->result_code){
+      case 1: //black win
+        $point = $player->name == $this->black->name ? 3 : 1;
+        break;
+      case 2: //white win
+        $point = $player->name == $this->black->name ? 1 : 3;
+        break;
+      case 3: //draw
+        $point = 2;
+        break;
+      case 4: //black win by default
+        $point = $player->name == $this->black->name ? 3 : 0;
+        break;
+      case 5: //no game
+        $point = 1;
+        break;
+      default: //other
+        $point = 0;
+        break;
+    }
+    return $point;
+  }
 
   public static function load(){
     if(!file_exists(self::$file_path)){
@@ -24,18 +71,20 @@ class Result{
     foreach($players as $player){
       $player_names[] = $player->name;
     }
-
-    $file = fopen(self::$file_path,'r');
+    
     $overwrites = array();
     $overwritten_games = array();
-    while($line = fgets($file)){
-      if(preg_match('/\* /',$line)){
-        $overwrites[] = $line;
-        $line = substr($line,2);
-        $overwritten_games[] = array_slice(explode(',',$line),0,2);
+    if(file_exists(self::$file_path)){
+      $file = fopen(self::$file_path,'r');
+      while($line = fgets($file)){
+        if(preg_match('/\* /',$line)){
+          $overwrites[] = $line;
+          $line = substr($line,2);
+          $overwritten_games[] = array_slice(explode(',',$line),0,2);
+        }
       }
+      fclose($file);
     }
-    fclose($file);
 
     $result_file = fopen(self::$file_path,'w');
 
@@ -56,7 +105,7 @@ class Result{
         }
         $result_code = (int)$kifu->result;
         if($result_code == 1 || $result_code == 2 || $result_code == 3){
-          $result = implode(',',array($kifu->black_name,$kifu->white_name,$kifu->result,$kifu->created_at,"\n"));
+          $result = implode(',',array($kifu->black_name,$kifu->white_name,$kifu->result,$kifu->id,$kifu->created_at,"\n"));
           $results .= $result;
           fwrite($result_file,$result);
         }

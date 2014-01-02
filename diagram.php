@@ -4,7 +4,6 @@ require_once('./models/config.php');
 
 $config = Config::load_and_validate();
 $players = Player::load(true);
-
 if($config->tournament_type == "single_elimination"){
   $rounds = array();
   $num_rounds = log(count($players),2);
@@ -21,10 +20,11 @@ if($config->tournament_type == "single_elimination"){
       if(!$left || !$right){
         $next_round_players[] = null;
       } elseif($result = $left->get_result($right)){
-        if($result == "W"){
+        $result_label = $result->result_label_for($left);
+        if($result_label == "W"){
           $game[] = "[1,0]";
           $next_round_players[] = $left;
-        } elseif($result == "L"){
+        } elseif($result_label == "L"){
           $game[] = "[0,1]";
           $next_round_players[] = $right;
         }
@@ -36,6 +36,16 @@ if($config->tournament_type == "single_elimination"){
     $rounds[] = $round;
   }
   include('./templates/single_elimination_template.php');
-} else {
+} elseif($config->tournament_type == "group") {
+  $player_points = array();
+  for($i=0;$i<count($players);$i++){
+    $player = $players[$i];
+    $player->calculate_point();
+    $player_points[$player->name] = $player->tournament_point * 1000 + $i;
+  }
+  arsort($player_points);
+  $player_ranks = array_flip(array_keys($player_points));
+
+  require_once('./models/util.php');
   include('./templates/group_template.php');
 }
