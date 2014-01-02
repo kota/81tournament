@@ -1,0 +1,7 @@
+Options -Indexes
+<Files ~ "\.json$">
+  deny from all
+</Files>
+<Files ~ "\.txt$">
+  deny from all
+</Files>
