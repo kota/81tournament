@@ -1,11 +1,11 @@
+<!DOCTYPE html>
 <html>
 
 <head>
+<!--[if ie]><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" /><![endif]-->
 <script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
 <script type="text/javascript" src="js/jquery.bracket.min.js"></script>
 <link rel="stylesheet" type="text/css" href="js/jquery.bracket.min.css" />
-<script type="text/javascript">
-</script>
 <style type="text/css">
   table, td, th { border: 1px solid; }
   td { width: 60px; }
@@ -18,22 +18,25 @@
    <script type="text/javascript">
    var tournament = {
        teams : [
-         <?php for($i=0;$i<count($players)/2;$i++): ?>
-           [<?php echo htmlspecialchars($players[$i*2]->to_json_string()) ?>,<?php echo htmlspecialchars($players[$i*2+1]->to_json_string()) ?>],
+         <?php for($i=0;$i<(int)count($players)/2;$i++): ?>
+           [<?php echo htmlspecialchars($players[$i*2]->to_json_string()) . "," . htmlspecialchars($players[$i*2+1]->to_json_string()) ?>]
+           <?php if($i != ((int)count($players)/2)-1) echo "," ?>
          <?php endfor; ?>
        ],
        results : [
-         <?php foreach($rounds as $round): ?>
+         <?php for($i=0;$i<count($rounds);$i++): ?>
            [
-           <?php foreach($round as $game): ?>
-             <?php if(count($game) > 2): ?>
-              <?php echo $game[2] ?>,
+           <?php for($j=0;$j<count($rounds[$i]);$j++): ?>
+             <?php if(count($rounds[$i][$j]) > 2): ?>
+              <?php echo $rounds[$i][$j][2] ?>
              <?php else: ?>
-               null,
+               null
              <?php endif; ?>
-           <?php endforeach; ?>
-           ],
-         <?php endforeach; ?>
+             <?php if($j != count($rounds[$i])-1) echo "," ?>
+           <?php endfor; ?>
+           ]
+           <?php if($j != count($rounds)-1) echo "," ?>
+         <?php endfor; ?>
        ]
    }
 

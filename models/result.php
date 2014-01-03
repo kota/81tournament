@@ -39,7 +39,10 @@ class Result{
       case 4: //black win by default
         $point = $player->name == $this->black->name ? 3 : 0;
         break;
-      case 5: //no game
+      case 5: //black lose by default
+        $point = $player->name == $this->black->name ? 0 : 3;
+        break;
+      case 6: //no game
         $point = 1;
         break;
       default: //other
