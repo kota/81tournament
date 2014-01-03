@@ -27,6 +27,9 @@ if($config->tournament_type == "single_elimination"){
         } elseif($result_label == "L"){
           $game[] = "[0,1]";
           $next_round_players[] = $right;
+        } else { #no winners.
+          $game[] = "['d','d']";
+          $next_round_players[] = null;
         }
       } else { #not played yet.
         $next_round_players[] = null;
@@ -35,6 +38,24 @@ if($config->tournament_type == "single_elimination"){
     }
     $rounds[] = $round;
   }
+
+  //TODO replace $results with json (if possible)
+  $results = "[";
+  for($i=0;$i<count($rounds);$i++){
+    $results .= "[";
+      for($j=0;$j<count($rounds[$i]);$j++){
+        if(count($rounds[$i][$j]) > 2){
+          $results .= $rounds[$i][$j][2];
+        } else {
+          $results .= "[null]";
+        } 
+        if($j != count($rounds[$i])-1) $results .= ",";
+      }
+    $results .= "]";
+    if($i != count($rounds)-1) $results .= ",";
+  }
+  $results .= "]";
+
   include('./templates/single_elimination_template.php');
 } elseif($config->tournament_type == "group") {
   $player_points = array();

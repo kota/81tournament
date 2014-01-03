@@ -15,10 +15,10 @@ class Result{
 
   public function result_label_for($player){
     if($player->name == $this->black->name){
-      $black_result_table = array(1 => "W", 2 => "L", 3 => "D");
+      $black_result_table = array(1 => "W", 2 => "L", 3 => "D", 4 => "W", 5 => "L", 6 => "D");
       return $black_result_table[$this->result_code];
     } elseif($player->name == $this->white->name) {
-      $white_result_table = array(1 => "L", 2 => "W", 3 => "D");
+      $white_result_table = array(1 => "L", 2 => "W", 3 => "D", 4 => "L", 5 => "W", 6 => "D");
       return $white_result_table[$this->result_code];
     } else {
       return "";

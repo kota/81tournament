@@ -19,25 +19,10 @@
    var tournament = {
        teams : [
          <?php for($i=0;$i<(int)count($players)/2;$i++): ?>
-           [<?php echo htmlspecialchars($players[$i*2]->to_json_string()) . "," . htmlspecialchars($players[$i*2+1]->to_json_string()) ?>]
-           <?php if($i != ((int)count($players)/2)-1) echo "," ?>
+           [<?php echo htmlspecialchars($players[$i*2]->to_json_string()) . "," . htmlspecialchars($players[$i*2+1]->to_json_string()) ?>]<?php if($i != ((int)count($players)/2)-1) echo ",\n" ?>
          <?php endfor; ?>
        ],
-       results : [
-         <?php for($i=0;$i<count($rounds);$i++): ?>
-           [
-           <?php for($j=0;$j<count($rounds[$i]);$j++): ?>
-             <?php if(count($rounds[$i][$j]) > 2): ?>
-              <?php echo $rounds[$i][$j][2] ?>
-             <?php else: ?>
-               null
-             <?php endif; ?>
-             <?php if($j != count($rounds[$i])-1) echo "," ?>
-           <?php endfor; ?>
-           ]
-           <?php if($j != count($rounds)-1) echo "," ?>
-         <?php endfor; ?>
-       ]
+       results : <?php echo $results; ?>
    }
 
    function team_renderer(container, data, score) {
@@ -46,7 +31,11 @@
        var zero_filled_code = ("00"+data.country_code).slice(-3);
        container.append('<img src="http://81dojo.com/dojo/images/flags_ss/'+zero_filled_code+'.png" /> ').append(data.name)
      } else {
-       container.append(data.name);
+       if(data.name){
+         container.append(data.name);
+       } else {
+         container.append(data);
+       }
      }
    }
  

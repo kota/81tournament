@@ -78,7 +78,7 @@ class Player{
   }
 
   public function get_result($opponent){
-    if(array_key_exists($opponent->name,$this->results)){
+    if($this->results && array_key_exists($opponent->name,$this->results)){
       return $this->results[$opponent->name];
     }
     return null;
