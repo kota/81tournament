@@ -40,7 +40,7 @@
             </td>
           <?php else: ?>
             <td>&nbsp;</td>
-          <? endif ?>
+          <?php endif ?>
         <?php endif; ?>
       <?php endfor; ?>
       <td class="center"><?php echo isset($players[$i]->comment) ? htmlspecialchars($players[$i]->comment) : '&nbsp;' ?></td>
