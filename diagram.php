@@ -4,6 +4,7 @@ require_once('./models/config.php');
 
 $config = Config::load_and_validate();
 $players = Player::load(true);
+
 if($config->tournament_type == "single_elimination"){
   $rounds = array();
   $num_rounds = log(count($players),2);
@@ -19,6 +20,12 @@ if($config->tournament_type == "single_elimination"){
       $game = array($left,$right);
       if(!$left || !$right){
         $next_round_players[] = null;
+      } if($left->is_place_holder()){
+        $game[] = "[0,1]";
+        $next_round_players[] = $right;
+      } elseif($right->is_place_holder()){
+        $game[] = "[1,0]";
+        $next_round_players[] = $left;
       } elseif($result = $left->get_result($right)){
         $result_label = $result->result_label_for($left);
         if($result_label == "W"){
@@ -29,7 +36,7 @@ if($config->tournament_type == "single_elimination"){
           $next_round_players[] = $right;
         } else { #no winners.
           $game[] = "['d','d']";
-          $next_round_players[] = null;
+          $next_round_players[] = Player::create_place_holder();
         }
       } else { #not played yet.
         $next_round_players[] = null;

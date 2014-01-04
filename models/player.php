@@ -12,9 +12,11 @@ class Player{
   public $comment;
   public $results;
 
+  private $place_holder_flag = false;
+
   public $tournament_point;
 
-  public function __construct($params) {
+  public function __construct($params,$place_holder_flag=false) {
     $this->name = trim($params[0]);
     if(count($params) > 1){
       $this->rate = (int)trim($params[1]);
@@ -25,6 +27,11 @@ class Player{
     if(count($params) > 3){
       $this->comment = trim($params[3]);
     }
+    $this->place_holder_flag = $place_holder_flag;
+  }
+
+  public function is_place_holder(){
+    return $this->place_holder_flag;
   }
 
   public function to_json_string(){
@@ -116,6 +123,10 @@ class Player{
     fclose($tmp_file);
 
     rename($tmp_file_path, self::$file_path);
+  }
+
+  public static function create_place_holder(){
+    return new Player("place holder",true);
   }
   
   private static function fetch_player_detail($login){
