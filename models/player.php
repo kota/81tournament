@@ -43,7 +43,7 @@ class Player{
       return '&nbsp;';
     }
     $zero_filled = sprintf('%03d', $this->country_code);
-    return '<img src="http://81dojo.com/dojo/images/flags_s/' . $zero_filled . '.gif" />';
+    return '<img src="http://81dojo.com/dojo/images/flags_s/' . $zero_filled . '.gif" align="absbottom" />';
   }
 
   public function calculate_point(){
