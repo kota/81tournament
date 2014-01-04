@@ -40,6 +40,7 @@ class Player{
   }
 
   public function calculate_point(){
+    if (!$this->results) return 0;
     $this->tournament_point = 0;
     foreach($this->results as $key => $result){
       $this->tournament_point += $result->point_for($this);
