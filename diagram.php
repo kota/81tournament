@@ -20,23 +20,42 @@ if($config->tournament_type == "single_elimination"){
       $game = array($left,$right);
       if(!$left || !$right){
         $next_round_players[] = null;
-      } if($left->is_place_holder()){
+      } elseif($left->is_place_holder()){
         $game[] = "[0,1]";
         $next_round_players[] = $right;
       } elseif($right->is_place_holder()){
         $game[] = "[1,0]";
         $next_round_players[] = $left;
       } elseif($result = $left->get_result($right)){
-        $result_label = $result->result_label_for($left);
-        if($result_label == "W"){
-          $game[] = "[1,0]";
-          $next_round_players[] = $left;
-        } elseif($result_label == "L"){
-          $game[] = "[0,1]";
-          $next_round_players[] = $right;
-        } else { #no winners.
-          $game[] = "['d','d']";
-          $next_round_players[] = Player::create_place_holder();
+        switch($result->result_code){
+          case 1:
+          case 4: //black win
+            if($result->black == $left){
+              $game[] = "[1,0]";
+              $next_round_players[] = $left;
+            } else {
+              $game[] = "[0,1]";
+              $next_round_players[] = $right;
+            }
+            break;
+          case 2:
+          case 5: //white win
+            if($result->white == $left){
+              $game[] = "[1,0]";
+              $next_round_players[] = $left;
+            } else {
+              $game[] = "[0,1]";
+              $next_round_players[] = $right;
+            }
+            break;
+          case 6:
+          case 7: //both loss
+            $game[] = "['d','d']";
+            $next_round_players[] = Player::create_place_holder();
+            break;
+          case 3: //draw and rematch
+          default: //other
+            $next_round_players[] = null;
         }
       } else { #not played yet.
         $next_round_players[] = null;
