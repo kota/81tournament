@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 class Result{
   private static $file_path = './data/result.txt';
   public $result_code;
@@ -17,10 +17,10 @@ class Result{
 
   public function result_label_for($player){
     if($player->name == $this->black->name){
-      $black_result_table = array(1 => "W", 2 => "L", 3 => "D", 4 => "W", 5 => "L", 6 => "D", 7 => "D");
+      $black_result_table = array(1 => "○", 2 => "●", 3 => "△", 4 => "□", 5 => "■", 6 => "▲", 7 => "■");
       return $black_result_table[$this->result_code];
     } elseif($player->name == $this->white->name) {
-      $white_result_table = array(1 => "L", 2 => "W", 3 => "D", 4 => "L", 5 => "W", 6 => "D", 7 => "D");
+      $white_result_table = array(1 => "●", 2 => "○", 3 => "△", 4 => "■", 5 => "□", 6 => "▲", 7 => "■");
       return $white_result_table[$this->result_code];
     } else {
       return "";

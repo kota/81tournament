@@ -1,32 +1,47 @@
 <html>
 
 <head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <style type="text/css">
-  table {
-    border:2px solid #666;
-    border-collapse: collapse;
+  table.group {
+    border-top:2px solid #666;
+    border-left:2px solid #666;
+    border-bottom:1px solid #666;
+    border-right:1px solid #666;
+    border-spacing: 0;
     font-size: 14px;
     box-shadow: 3px 3px 12px rgba(0,0,0,0.3);
     text-align: center;
+    empty-cells: show;
   }
-  tr.header { background: linear-gradient(to bottom,#ddd,#eee,#ccc); }
-  th { width:25px; padding: 6px 3px; border: 1px solid #666; }
-  td { width:25px; height: 22px; padding-left: 5px; padding-right: 3px; border: 1px solid #666; }
-  td.void { background-color: rgb(153, 153, 153); }
-  td.mark { padding: 0; }
+  th, td {
+    border-top: 0;
+    border-left: 0;
+    border-bottom: 1px solid #666;
+    border-right: 1px solid #666;
+    width: 25px;
+    padding-left: 3px;
+    padding-right: 3px;
+  }
+  th { height: 30px; }
+  td { height: 23px; }
+  tr.header { background: linear-gradient(to bottom,#ddd,#eee,#ccc); background: -ms-linear-gradient(top,#ddd,#eee,#ccc); }
   th.small { font-size:small; }
-  td.player { text-align:left; width: auto; }
+  td.mark { padding: 0; font-family: Meiryo UI; }
+  td.void { background-color: rgb(153, 153, 153); }
+  td.flag { border-right: 0; }
+  td.player { text-align:left; width: auto; padding-left: 0; }
   td.colored { background: #ffe; }
-  td.mark a { display: block; height: 22px; line-height: 22px; text-decoration: none; color: black; font-size: 16px; }
+  td.mark a { display: block; height: 23px; line-height: 23px; text-decoration: none; color: black; font-size: 16px; }
   td.mark a:hover { background: #8f8; color: red;}
 </style>
 </head>
 
 <body style="font-family: Verdana;">
-<table>
+<table class="group">
   <tr class="header">
     <th>#</th>
-    <th>Player</th>
+    <th colspan="2">Player</th>
     <th>R</th>
     <th class="small">Points</th>
     <th class="small">Rank</th>
@@ -38,7 +53,8 @@
   <?php for($i=0;$i<count($players);$i++): ?>
     <tr>
       <td><?php echo ($i+1); ?></td>
-      <td class="player"><?php echo $players[$i]->country_flag_s_tag(); ?> <?php echo htmlspecialchars($players[$i]->name); ?></td>
+      <td class="flag"><?php echo $players[$i]->country_flag_s_tag(); ?></td>
+      <td class="player"><?php echo htmlspecialchars($players[$i]->name); ?></td>
       <td><?php echo $players[$i]->rate; ?></td>
       <td class="colored"><?php echo $players[$i]->calculate_point(); ?></td>
       <td class="colored"><?php echo Util::ordinalize($player_ranks[$players[$i]->name]+1); ?></td>
