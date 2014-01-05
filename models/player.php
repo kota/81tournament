@@ -68,16 +68,34 @@ class Player{
     fclose($file);
     if($load_results){
       $results = Result::load();
+      $latest_results = array();
       if($results){
         foreach($results as $raw_result){
           $black = self::find_player_by_name($raw_result[0],$players);
           $white = self::find_player_by_name($raw_result[1],$players);
           $result_code = $raw_result[2];
           $kifu_id = $raw_result[3];
-          $result = new Result($result_code,$black,$white,$kifu_id);
-          
-          $black->add_result($white,$result);
-          $white->add_result($black,$result);
+          $created_at = new DateTime($raw_result[4]);
+          $result = new Result($result_code,$black,$white,$kifu_id,$created_at);
+          $found = false;
+          for($i=0;$i<count($latest_results);$i++){
+            $latest = $latest_results[$i];
+            if($latest->black->name == $result->black->name && $latest->white->name == $result->white->name ||
+               $latest->white->name == $result->black->name && $latest->black->name == $result->white->name){
+              $found =true;
+              if($latest->created_at < $result->created_at){
+                $latest_results[$i] = $result;
+              }
+              break;
+            }
+          }
+          if(!$found){
+            $latest_results[] = $result;
+          }
+        }
+        foreach($latest_results as $latest){
+          $latest->black->add_result($latest->white,$latest);
+          $latest->white->add_result($latest->black,$latest);
         }
       }
     }

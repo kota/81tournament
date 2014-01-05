@@ -5,12 +5,14 @@ class Result{
   public $black;
   public $white;
   public $kifu_id;
+  public $created_at;
 
-  public function __construct($result_code,$black,$white,$kifu_id) {
+  public function __construct($result_code,$black,$white,$kifu_id,$created_at=null) {
     $this->result_code = (int)$result_code;
     $this->black = $black;
     $this->white = $white;
     $this->kifu_id = $kifu_id;
+    $this->created_at = $created_at;
   }
 
   public function result_label_for($player){
