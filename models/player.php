@@ -133,7 +133,8 @@ class Player{
       if($detail = self::fetch_player_detail($login)){
         $country_code = (int)$detail->country->code;
         $rate = (int)$detail->rate;
-        fwrite($tmp_file,$login . "," . $rate . "," . $country_code . ",\n");
+        $cs_login = $detail->login;
+        fwrite($tmp_file,$cs_login . "," . $rate . "," . $country_code . ",\n");
       } else {
         fwrite($tmp_file,$login . "\n");
       }
