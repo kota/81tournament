@@ -13,6 +13,7 @@
     box-shadow: 3px 3px 12px rgba(0,0,0,0.3);
     text-align: center;
     empty-cells: show;
+    background: white;
   }
   th, td {
     border-top: 0;
@@ -54,7 +55,7 @@
     <tr>
       <td><?php echo ($i+1); ?></td>
       <td class="flag"><?php echo $players[$i]->country_flag_s_tag(); ?></td>
-      <td class="player"><?php echo htmlspecialchars($players[$i]->name); ?></td>
+      <td class="player"><?php echo htmlspecialchars($players[$i]->display_name); ?></td>
       <td><?php echo $players[$i]->rate; ?></td>
       <td class="colored"><?php echo $players[$i]->calculate_point(); ?></td>
       <td class="colored"><?php echo Util::ordinalize($player_ranks[$players[$i]->name]+1); ?></td>

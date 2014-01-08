@@ -7,6 +7,7 @@ class Player{
   private static $config;
  
   public $name;
+  public $display_name;
   public $rate;
   public $country_code;
   public $comment;
@@ -17,7 +18,8 @@ class Player{
   public $tournament_point;
 
   public function __construct($params,$place_holder_flag=false) {
-    $this->name = trim($params[0]);
+    $this->display_name = trim($params[0]);
+    $this->name = strtolower($this->display_name);
     if(count($params) > 1){
       $this->rate = (int)trim($params[1]);
     }
@@ -35,7 +37,7 @@ class Player{
   }
 
   public function to_json_string(){
-    return "{name:'" . $this->name . "',rate:'" . $this->rate . "',country_code:'" . $this->country_code . "'}";
+    return "{name:'" . $this->display_name . "',rate:'" . $this->rate . "',country_code:'" . $this->country_code . "'}";
   }
 
   public function country_flag_s_tag(){
