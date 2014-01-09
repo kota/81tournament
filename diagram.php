@@ -88,7 +88,7 @@ if($config->tournament_type == "single_elimination"){
   for($i=0;$i<count($players);$i++){
     $player = $players[$i];
     $player->calculate_point();
-    $player_points[$player->name] = $player->tournament_point * 1000 + $i;
+    $player_points[$player->name] = $player->tournament_point * 1000 - $i;
   }
   arsort($player_points);
   $player_ranks = array_flip(array_keys($player_points));
