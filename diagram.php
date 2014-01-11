@@ -31,20 +31,20 @@ if($config->tournament_type == "single_elimination"){
           case 1:
           case 4: //black win
             if($result->black == $left){
-              $game[] = "[1,0]";
+              $game[] = "[1,0,'" . $result->kifu_id . "']";
               $next_round_players[] = $left;
             } else {
-              $game[] = "[0,1]";
+              $game[] = "[0,1,'" . $result->kifu_id . "']";
               $next_round_players[] = $right;
             }
             break;
           case 2:
           case 5: //white win
             if($result->white == $left){
-              $game[] = "[1,0]";
+              $game[] = "[1,0,'" . $result->kifu_id . "']";
               $next_round_players[] = $left;
             } else {
-              $game[] = "[0,1]";
+              $game[] = "[0,1,'" . $result->kifu_id . "']";
               $next_round_players[] = $right;
             }
             break;

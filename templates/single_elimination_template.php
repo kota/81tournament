@@ -15,7 +15,14 @@
 
 <body>
  <div id="single-elim">
-   <script type="text/javascript">
+  <script type="text/javascript">
+
+  function onclick(data){
+    if(data){
+      window.open('http://81dojo.com/kifuviewer.html?kid=' + data);
+    }
+  }
+
    var tournament = {
        teams : [
          <?php for($i=0;$i<(int)count($players)/2;$i++): ?>
@@ -43,6 +50,7 @@
        $('#single-elim .diagram').bracket({
          skipConsolationRound: true,
          init: tournament, /* data to initialize the bracket with */
+         onMatchClick: onclick,
          decorator: {edit: function(){}, 
                      render: team_renderer}});
      })
